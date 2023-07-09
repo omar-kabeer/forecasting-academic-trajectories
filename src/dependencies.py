@@ -9,6 +9,16 @@ from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import PolynomialFeatures
 from scipy.stats import skew, kurtosis
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import make_classification
+from sklearn.feature_selection import SelectFromModel
+from sklearn.feature_selection import mutual_info_classif
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 
 # Libraries for regression
 from sklearn.linear_model import LinearRegression
