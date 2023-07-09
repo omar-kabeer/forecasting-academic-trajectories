@@ -9,14 +9,24 @@ from imblearn.over_sampling import SMOTE
 from sklearn.preprocessing import PolynomialFeatures
 from scipy.stats import skew, kurtosis
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+from sklearn.feature_selection import RFE
+from sklearn.linear_model import LogisticRegression
+from sklearn.datasets import make_classification
+from sklearn.feature_selection import SelectFromModel
+from sklearn.feature_selection import mutual_info_classif
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import GridSearchCV, train_test_split
 
-# Libraries for regression
-from sklearn.linear_model import LinearRegression
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.tree import DecisionTreeRegressor
-from sklearn import svm
-from sklearn.linear_model import Lasso
-from sklearn.linear_model import Ridge
+# Libraries for classification
+from sklearn.svm import SVC, LinearSVC
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
 
 # Libraries for performance evaluation
 from sklearn.metrics import classification_report, confusion_matrix
