@@ -5,6 +5,8 @@ import numpy as np
 import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
+import itertools
+
 from pandas.plotting import scatter_matrix
 from sklearn.model_selection import train_test_split
 from imblearn.over_sampling import SMOTE
@@ -21,7 +23,9 @@ from sklearn.feature_selection import SelectFromModel
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import GridSearchCV, train_test_split
+from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import cross_val_score
+from sklearn.metrics import precision_recall_curve, average_precision_score
 
 # Libraries for classification
 from sklearn.svm import SVC, LinearSVC
