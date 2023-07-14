@@ -94,7 +94,7 @@ def main():
             
             st.subheader('Classification Method')
             st.markdown(
-                "Our application's cornerstone is a robust classification method, leveraging a logistic regression model trained on extensive student data. By harnessing the power of machine learning, we provide accurate and reliable predictions of student trajectories, enabling institutions to identify and support students who are at risk of academic failure or dropouts."
+                "Our application's cornerstone is a robust classification method, leveraging a logistic regression model dfed on extensive student data. By harnessing the power of machine learning, we provide accurate and reliable predictions of student trajectories, enabling institutions to identify and support students who are at risk of academic failure or dropouts."
             )
             st.subheader("Data Analysis")
             st.markdown(
@@ -107,7 +107,7 @@ def main():
             st.write("Start by importing your student data into the app. Our user-friendly interface allows you to upload your data with ease.")
 
             st.subheader("2. Classification Method")
-            st.write("Our app utilizes a trained logistic regression model based on comprehensive student data.")
+            st.write("Our app utilizes a dfed logistic regression model based on comprehensive student data.")
             st.write("The classification method employs sophisticated machine learning techniques to accurately predict student trajectories and assess their likelihood of success in your dataset.")
             st.write("Gain insights into the risk profiles of your students, enabling you to make informed decisions and allocate resources effectively.")
 
@@ -136,12 +136,12 @@ def main():
                 st.write("A: To import your student data, click on the 'Upload Data' button on the page. Follow the instructions to select and upload your file.")
 
             # FAQ 2
-            with st.expander("Q: Can I use my own trained models for classification?"):
-                st.write("A: Currently, our app supports the use of pre-trained models provided by the system. However, we are actively working on an update that will allow users to upload and utilize their own models.")
+            with st.expander("Q: Can I use my own dfed models for classification?"):
+                st.write("A: Currently, our app supports the use of pre-dfed models provided by the system. However, we are actively working on an update that will allow users to upload and utilize their own models.")
 
             # FAQ 3
             with st.expander("Q: How accurate is the classification method?"):
-                st.write("A: The accuracy of the classification method depends on the quality and representativeness of the training data. Our models are trained on extensive datasets and aim to provide accurate predictions of student trajectories. However, it's important to interpret the results in conjunction with domain expertise and other relevant factors.")
+                st.write("A: The accuracy of the classification method depends on the quality and representativeness of the dfing data. Our models are dfed on extensive datasets and aim to provide accurate predictions of student trajectories. However, it's important to interpret the results in conjunction with domain expertise and other relevant factors.")
 
             # FAQ 4
             with st.expander("Q: Can I export the results of the analysis?"):
@@ -163,7 +163,7 @@ def main():
     # Display selected page content
     elif page_selection == "Explore Your Data":
         st.markdown(
-        "In this section, you can explore the data that will be used as input for the models. The input data should consist of financial statements, including balance sheets, income statements, and cash flow statements, provided in a specific format."
+        "In this section, you can explore the data that will be used as input for the models. The input data should consist of student datas, including balance sheets, income students, and cash flow students, provided in a specific format."
     )
         st.markdown(
         "The page validates the data entered by you and provides feedback in case of any errors or inconsistencies."
@@ -206,12 +206,12 @@ def main():
                 sel1, sel2 = st.tabs(["Visualise Your Data", "Statistical Analysis"])
                 with sel1:
 
-                    # Get numerical columns from the filtered DataFrame
-                    #df = df.drop(['FinancialsDate', 'Date'], axis=1)
-                    cat_columns = data.columns.tolist()
-                    #print(cat_columns)
-                    # Add a default option for the numerical feature selectbox
-                    cat_columns = cat_columns
+                    # Select columns with "grade" or "Grade" in their names
+                    ca_columns = [col for col in data.columns if "grade" in col.lower()]
+                    ac_cols = [col for col in data.columns if "curricular" in col.lower()]
+                    ba_cols = ca_columns + ac_cols
+                    cat_columns = list(set(ba_cols))
+                    _cols = df.drop(cat_columns, axis=1).columns.to_list()
                     st.markdown("### Visualizing the Data")
                     st.markdown("When analyzing categorical data, bar charts are a common visualization choice. They represent "
                                 "the distribution of categories within the data.")
@@ -225,7 +225,7 @@ def main():
                                 "to gain insights and communicate your findings effectively.")
 
                     # Display the numerical feature selectbox
-                    selected_feature = st.selectbox('Select a category to analyse', cat_columns)
+                    selected_feature = st.selectbox('Select a category to analyse', _cols)
 
                     # Check if a numerical feature is selected
                     if selected_feature != 'Select a category to analyse':
@@ -268,511 +268,152 @@ def main():
 
 
                     # Select columns with "grade" or "Grade" in their names
-                    cat_columns = [col for col in data.columns if "grade" in col.lower()]
+                    ca_columns = [col for col in data.columns if "grade" in col.lower()]
+                    ac_cols = [col for col in data.columns if "curricular" in col.lower()]
+                    ba_cols = ca_columns + ac_cols
+                    cat_columns = list(set(ba_cols))
                     if cat_columns:
                         # Select columns for scatter plot
                         columns = st.multiselect("Select columns", cat_columns)
 
-                    #print(cat_columns)
-                    # Add a default option for the numerical feature selectbox
-                    #cat_columns = ['Select a category to analyse'] + cat_columns
+                        if len(columns) > 1:
+                            fig, ax = plt.subplots()
+                            ax.scatter(data[columns[0]], data[columns[1]])
 
-                        ax.scatter(data[columns[0]], data[columns[1]])
+                            ax.set_xlabel(columns[0])
+                            ax.set_ylabel(columns[1])
+                            ax.set_title("Scatter Plot")
+                            ax.legend()
 
-                        ax.set_xlabel(cat_columns)
-                        ax.set_ylabel("Values")
-                        ax.set_title("Scatter Plot")
-                        ax.legend()
+                            st.pyplot(fig)
 
-                        st.pyplot()
-
-    elif page_selection == "Credit Risk Modelling":
-        tab1, tab2, tab3, tab4, tab5 = st.tabs(["Fraud Detector", "Benford's Analysis", "Outlier Detector", "Anomaly Probabilities & Scores", "PyOD Outlier Detector"])
+    elif page_selection == "Predicting Trajectories":
+        tab1, tab2 = st.tabs(["Trajectory Detector", "Anomaly Probabilities & Scores"])
         with tab1:
-            st.subheader("Fraud Detection Model")
-            st.write("### Identifies potential defaulting companies")
-            st.write("Our advanced Fraud Detection Model empowers you to uncover potential defaulting companies within financial statements. By leveraging powerful algorithms and machine learning techniques, this feature effectively analyzes the provided data to identify suspicious activities that may indicate default. By utilizing a combination of historical patterns, statistical analysis, and data-driven insights, our model helps you safeguard your financial integrity by pinpointing statements that require further investigation. Stay one step ahead and protect your business from potential financial risks with our reliable and robust Fraud Detection Model.")
+            st.subheader("Trajectory Detection Model")
+            st.write("### Identifies potential dropout students")
+            st.write("Our advanced trajectory detection Model empowers you to uncover potential dropout students within student datas. By leveraging powerful algorithms and machine learning techniques, this feature effectively analyzes the provided data to identify suspicious activities that may indicate default. By utilizing a combination of historical patterns, statistical analysis, and data-driven insights, our model helps you safeguard your financial integrity by pinpointing students that require further investigation. Stay one step ahead and protect your business from potential financial risks with our reliable and robust trajectory detection Model.")
             # Load the pickled model
-            model = pickle.load(open("resources/pickles/RandomForestClassifier.pkl", "rb"))
+            model = pickle.load(open("src/pickles/model.pkl", "rb"))
 
-            
+            # Upload and load the data
+            uploaded_file = st.file_uploader("Upload your data file", type=["csv"])
+            if uploaded_file is not None:
+                df = pd.read_csv(uploaded_file)
             # Read the uploaded file as a DataFrame
             
-            df = df2.drop('Unnamed: 0', axis=1)
-            # Perform predictions on the financial statements
-            predictions = model.predict(df)
+                df['Grade Improvement'] = df['Previous qualification (grade)'] - df['Admission grade']
+                df['Overall grade'] = df['Admission grade'] + df['Previous qualification (grade)'] + df['Curricular units 1st sem (grade)'] + df['Curricular units 2nd sem (grade)']
+                df['Overall curricular units grade'] = df['Curricular units 1st sem (grade)'] + df['Curricular units 2nd sem (grade)']
+                df['Overall curricular units approved'] = df['Curricular units 1st sem (approved)'] + df['Curricular units 2nd sem (approved)']
+                df['Overall curricular units credited'] = df['Curricular units 1st sem (credited)'] + df['Curricular units 2nd sem (credited)']
+                df['Overall curricular units enrolled'] = df['Curricular units 1st sem (enrolled)'] + df['Curricular units 2nd sem (enrolled)']
+                df['Overall curricular units evaluations'] = df['Curricular units 1st sem (evaluations)'] + df['Curricular units 2nd sem (evaluations)']
+                df['Overall curricular units without evaluations'] = df['Curricular units 1st sem (without evaluations)'] + df['Curricular units 2nd sem (without evaluations)']
+                
+                
+                features = ['Age at enrollment', 'Overall curricular units credited', 'Marital status', 'Debtor', 'Curricular units 2nd sem (enrolled)',
+                            'Curricular units 2nd sem (evaluations)', 'Overall curricular units grade', 'Curricular units 1st sem (approved)',
+                            'Previous qualification (grade)', 'Course', 'Curricular units 1st sem (evaluations)', 'Curricular units 2nd sem (approved)',
+                            "Father's qualification", 'Curricular units 1st sem (grade)', "Mother's occupation", 'Overall curricular units without evaluations',
+                            'Displaced', "Mother's qualification", 'Previous qualification', 'Curricular units 2nd sem (credited)', 'Educational special needs',
+                            'GDP', 'Grade Improvement', "Father's occupation", 'Admission grade', 'Curricular units 1st sem (without evaluations)', 'Scholarship holder',
+                            'Curricular units 1st sem (enrolled)', 'Inflation rate', 'Tuition fees up to date', 'Nacionality', 'Overall curricular units evaluations',
+                            'Overall curricular units approved', 'Curricular units 2nd sem (without evaluations)', 'Curricular units 1st sem (credited)', 'International',
+                            'Application mode', 'Application order', 'Overall curricular units enrolled', 'Gender', 'Overall grade', 'Unemployment rate',
+                            'Curricular units 2nd sem (grade)', 'Daytime/evening attendance\t']
+                # Calculate the mean and standard deviation for each column
+                mean = df.mean()
+                std = df.std()
 
-            # Filter statements classified as defaulters
-            defaulters = df[predictions == 1]
+                # Perform Z-score normalization on the entire dataframe
+                train_df = (df - mean) / std
+                # Perform predictions on the student datas
+                predictions = model.predict(train_df)
 
-            with st.spinner("Detecting potential fraud..."):
+                # Filter students classified as dropouts
+                dropouts = df[predictions == 0]
 
-                if not defaulters.empty:
-                    st.write("### Potential Defaulters:")
-                    st.write(f"There are {len(defaulters)} potential defaulters")
-                    st.write(defaulters)
+                with st.spinner("Detecting potential dropouts..."):
+
+                    if not dropouts.empty:
+                        st.write("### Potential dropouts:")
+                        st.write(f"There are {len(dropouts)} potential dropouts")
+                        st.write(dropouts)
 
 
 
-                else:
-                    st.write("No potential defaulters found.")
-                st.markdown("Output")
-                st.markdown("The output of our fraud detection model includes a list of potential defaulting companies. These companies are flagged by our trained model based on their financial statement characteristics and the possibility of default calculated by the model.")
+                    else:
+                        st.write("No potential dropouts found.")
+                    st.markdown("Output")
+                    st.markdown("The output of our trajectory detection model includes a list of potential dropout students. These students are detected by our model based on their academic and personal characteristics and the possibility of dropout calculated by the model.")
+
+
 
         with tab2:
-            st.write("### Statistical Anomaly Detection")
-            st.write("#### Detects unusual patterns in financial data")
-            st.write("Our cutting-edge Benford's Analysis feature empowers you to detect unusual patterns in financial data with precision and accuracy. By leveraging statistical techniques and the principles of Benford's Law, this powerful tool examines the distribution of leading digits in numerical data to identify potential anomalies. Uncover irregularities and uncover hidden patterns that may signify fraudulent or suspicious activities in your financial statements. With our user-friendly interface and robust analytical capabilities, you can confidently navigate your financial data and make informed decisions to protect your organization's integrity and mitigate risks. Detect and address anomalies effectively with our reliable Benford's Analysis feature.")
-            
-            df = df.drop(['ID', 'DimFacilityKey', 'Unnamed: 0', 'Default', 'Year', 'Month', 'Week', 'Day', 'FinancialsDate'], axis=1)
-
-
-            tab1, tab2 = st.tabs(["Benford's Analysis", "Industry Benford's Analysis"])
-            with tab1:
-                # Get numerical columns from the filtered DataFrame
-                numerical_columns = df.select_dtypes(include='number').columns.tolist()
-                # Add a default option for the numerical feature selectbox
-                numerical_columns = ['Select a financial feature to analyse'] + numerical_columns
-
-                # Display the numerical feature selectbox
-                selected_feature = st.selectbox('Select a financial feature to analyse', numerical_columns)
-
-                # Check if a numerical feature is selected
-                if selected_feature != 'Select a financial feature to analyse':
-                    # Perform Benford's Law analysis on the selected feature
-                    feature_data = df[selected_feature].dropna()
-
-                    benf = bf.Benford(feature_data, confidence=95)
-                    report = benf.F1D.report(high_Z='all')
-                    table = benf.F1D.T
-                    mad = benf.F1D.MAD
-                    mads = [0.006, 0.012, 0.015]
-                    st.write("## Benford's Law Analysis for", selected_feature)
-                    st.markdown(f"The table below shows the expected number of times each first digit should appear in the dataset, as well as the actual number of times each first digit appears in {selected_feature} of the dataset.")
-                    st.markdown("- The 'Expected' row is based on Benford's Law expected frequencies")
-                    st.markdown("- The 'Found' row shows the frequencies found in the dataset, while the 'Counts' column is the actual number of times each first digit appeared in the dataset.")
-                    st.markdown("- The 'Dif' row shows the difference between the expected and actual number of times each first digit appeared.")
-                    st.markdown("- The 'AbsDif' row shows the absolute value of the difference between the expected and actual number of times each first digit appeared.")
-                    st.markdown("- The 'Z_score' row shows how many standard deviations away from the expected number of times each first digit appeared.")
-                    st.markdown("In general, a Z-score of 2 or more is considered to be a significant deviation from the expected number of times a first digit should appear. If the Z_score is above 2 it could be a sign of fraud, as fraudsters often manipulate financial data to make it appear more legitimate.")
-                    # Display the text report
-                    st.write(table)
-
-
-                    # Plot the graph from the report
-                    #benf.plot(title='Benford Distribution')
-                    st.pyplot(report)
-
-                    st.markdown("The Mean Absolute Deviation (MAD) helps us understand how spread out the scores are. It tells us on average how far each score is from the average score.")
-                    #mads = MAD_CONFORM[digs]
-                    if mad <= mads[0]:
-                        st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                        st.write(f'Close conformity.\n')
-                    elif mad <= mads[1]:
-                        st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                        st.write(f'Acceptable conformity.\n')
-                    elif mad <= mads[2]:
-                        st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                        st.write(f'Marginally Acceptable conformity.\n')
-                    else:
-                        st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                        st.write(f'Nonconformity.\n')
-                    st.write("It is important to note that Benford's Law is not a perfect indicator of fraud. There are many other factors that can contribute to a deviation from Benford's Law, such as rounding errors, data entry errors, and the natural variation of financial data. However, Benford's Law can be a useful tool for identifying potential fraud, and it should be used in conjunction with other fraud detection techniques.")
-
-            with tab2:
-                st.markdown('''Selecting the industry is a crucial step in effectively detecting financial statement fraud. Different industries have unique characteristics, data patterns, and risk profiles. By choosing the relevant industry, you can apply specialized fraud detection models and analysis techniques tailored to that specific sector, increasing the accuracy and effectiveness of your fraud detection efforts.
-
-Each industry may have its own set of common fraudulent activities, transaction types, or financial indicators that require focused attention. By selecting the appropriate industry, you can leverage industry-specific expertise and knowledge to identify potential anomalies and uncover fraudulent behaviors more efficiently.
-
-Furthermore, industry-specific analysis allows you to benchmark against industry norms and identify outliers or irregularities that may indicate fraudulent activities specific to that sector. This targeted approach enhances the precision of your fraud detection efforts and enables you to take appropriate actions promptly.
-
-Selecting the industry ensures that your financial statement fraud detection app aligns with the unique requirements and risks associated with the specific industry, enabling you to proactively safeguard your organization's financial integrity.
-
-'''
-)
-
-                # Get unique industry values from the 'Industry' column
-                industries = df['Industry'].unique()
-
-                # Add a default option for the selectbox
-                industries = ['Select an industry'] + list(industries)
-
-                # Display the selectbox
-                selected_industry = st.selectbox('Select an industry', industries)
-
-                # Check if an industry is selected
-                if selected_industry != 'Select an industry':
-                    # Filter the DataFrame based on the selected industry
-                    filtered_df = df[df['Industry'] == selected_industry]
-
-                    # Get numerical columns from the filtered DataFrame
-                    numerical_columns = filtered_df.select_dtypes(include='number').columns.tolist()
-
-                    # Add a default option for the numerical feature selectbox
-                    numerical_columns = ['Select a financial feature to analyse'] + numerical_columns
-
-                    # Display the numerical feature selectbox
-                    selected_feature = st.selectbox('Select a financial feature', numerical_columns)
-
-                    # Check if a numerical feature is selected
-                    if selected_feature != 'Select a financial feature to analyse':
-                        # Perform Benford's Law analysis on the selected feature
-                        feature_data = filtered_df[selected_feature].dropna()
-
-                        benf = bf.Benford(feature_data, confidence=95)
-                        report = benf.F1D.report(high_Z='all')
-                        table = benf.F1D.T
-                        mad = benf.F1D.MAD
-                        mads = [0.006, 0.012, 0.015]
-                        st.write("## Benford's Law Analysis for", selected_feature)
-                        st.markdown(f"The table below shows the expected number of times each first digit should appear in the dataset, as well as the actual number of times each first digit appears in {selected_feature} of the dataset.")
-                        st.markdown("- The 'Expected' row is based on Benford's Law expected frequencies")
-                        st.markdown("- The 'Found' row shows the frequencies found in the dataset, while the 'Counts' column is the actual number of times each first digit appeared in the dataset.")
-                        st.markdown("- The 'Dif' row shows the difference between the expected and actual number of times each first digit appeared.")
-                        st.markdown("- The 'AbsDif' row shows the absolute value of the difference between the expected and actual number of times each first digit appeared.")
-                        st.markdown("- The 'Z_score' row shows how many standard deviations away from the expected number of times each first digit appeared.")
-                        st.markdown("In general, a Z-score of 2 or more is considered to be a significant deviation from the expected number of times a first digit should appear. If the Z_score is above 2 it could be a sign of fraud, as fraudsters often manipulate financial data to make it appear more legitimate.")
-                        # Display the text report
-                        st.write(table)
-
-
-                        # Plot the graph from the report
-                        #benf.plot(title='Benford Distribution')
-                        st.pyplot(report)
-
-                        st.markdown("The Mean Absolute Deviation (MAD) helps us understand how spread out the scores are. It tells us on average how far each score is from the average score.")
-                        #mads = MAD_CONFORM[digs]
-                        if mad <= mads[0]:
-                            st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                            st.write(f'Close conformity.\n')
-                        elif mad <= mads[1]:
-                            st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                            st.write(f'Acceptable conformity.\n')
-                        elif mad <= mads[2]:
-                            st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                            st.write(f'Marginally Acceptable conformity.\n')
-                        else:
-                            st.markdown(f"#### The Mean Absolute Deviation for {selected_feature} is {round(mad,3)}")
-                            st.write(f'Nonconformity.\n')
-                        st.write("It is important to note that Benford's Law is not a perfect indicator of fraud. There are many other factors that can contribute to a deviation from Benford's Law, such as rounding errors, data entry errors, and the natural variation of financial data. However, Benford's Law can be a useful tool for identifying potential fraud, and it should be used in conjunction with other fraud detection techniques.")
-                            
-                            
-        with tab3:
-            #st.write("## Outlier Detector")
-            st.write("### Flags unusual or anomalous financial statements")
-            st.markdown("Our advanced Outlier Detector feature provides a reliable means to identify unusual or anomalous data points within your financial statements. By employing our powerful algorithm the **Isolation Forest**, this tool effectively flags data points that deviate significantly from the expected patterns or trends. Uncover hidden irregularities, potential errors, or even fraudulent activities that may impact your financial integrity. With a user-friendly interface and accurate detection capabilities, our Outlier Detector empowers you to make informed decisions and take proactive measures to address anomalies promptly. Safeguard your financial data with confidence using our robust and efficient Outlier Detector.")
-            
-            df = df.drop(
-                ['FinancialsDate', 'Year', 'Month', 'Week', 'Day', 'Date', 'ReturnEquityRatio'], axis=1)
-
-            # Encode categorical columns using one-hot encoding
-            encoder = OneHotEncoder()
-            encoded_cat_columns = encoder.fit_transform(df[['Financial_Type', 'Country', 'Industry']])
-            encoded_cat_columns_df = pd.DataFrame(encoded_cat_columns.toarray(),
-                                                  columns=encoder.get_feature_names_out(
-                                                      ['Financial_Type', 'Country', 'Industry']))
-
-            # Combine encoded categorical columns with numerical columns
-            X = pd.concat(
-                [df.drop(['Financial_Type', 'Country', 'Industry', 'Unnamed: 0', 'Default'], axis=1), encoded_cat_columns_df],
-                axis=1)
-
-            iforest = IsolationForest(contamination=0.03, max_samples='auto', bootstrap=False, n_jobs=-1, random_state=42)
-            iforest_ = iforest.fit(X)
-            y_pred = iforest_.predict(X)
-
-            y_score = iforest.decision_function(X)
-            neg_value_indices = np.where(y_score < 0)
-            # Filter statements classified as defaulters
-            anomalies = df[y_score < 0]
-
-            if not anomalies.empty:
-                st.write("### Anomalous statements:")
-                st.write(f"There are {len(anomalies)} anomalies in your data")
-                st.write(anomalies)
-
-
-            if st.checkbox("Global Interpretability"):
-                st.subheader("Global Machine Learning Interpretability")
-                st.markdown("The global interpretability section presents a summary plot and a bar plot, which offer "
-                            "valuable insights into the overall patterns and characteristics of the identified "
-                            "anomalies in your financial statements.")
-                st.markdown("This information is valuable because it allows us to focus on the most relevant features when investigating anomalies. By understanding which aspects of the financial statements are contributing the most to the model's decision, we can make more informed decisions and take appropriate actions.")
-
-                exp = shap.TreeExplainer(iforest) #Explainer
-                shap_values = exp.shap_values(X)  #Calculate SHAP values
-                shap.initjs()
-
-                tb1, tb2, tb3 = st.tabs(["Summary Plot", "Bar Plot", "Force Plot"])
-                with tb1:
-                    st.markdown("SHAP (SHapley Additive exPlanations) is a method used in machine learning to explain the predictions made by a model. In our case, the model is analyzing financial statements and identifying anomalies. The SHAP summary plot shows us which features have the most impact on the model's decision.")
-                    summary_plot = shap.summary_plot(shap_values, X)
-                    st.pyplot(summary_plot)
-                    st.markdown("Think of features as different pieces of information in the financial statements. For example, revenue, expenses, profitability ratios, and other financial metrics could be features. The SHAP summary plot ranks these features based on their importance in detecting anomalies.")
-
-                with tb2:
-                    st.markdown("The plot displays the features on the y-axis, with the most important feature at the top and the least important at the bottom. Each feature is represented by a horizontal bar. The length of the bar indicates the magnitude of the feature's impact. A longer bar means that the feature has a larger influence in identifying anomalies.")
-                    summary_plot = shap.summary_plot(shap_values, X,plot_type="bar")
-                    st.pyplot(summary_plot)
-                    st.markdown("So, by looking at the SHAP summary plot, we can quickly see which features play a significant role in identifying anomalies in the financial statements. It helps us understand the key factors driving the detection of unusual patterns.")
-
-                with tb3:
-                    st.title("Force Plot")
-                    st.markdown("A force plot is a visualization technique that helps us understand how individual features or factors contribute to a specific prediction made by a model. In our case, we use force plots to analyze financial statements and understand the factors that contribute to identifying anomalies or unusual patterns.")
-
-                    # Add a selectbox to choose the index
-                    index = st.selectbox("Select an index", range(len(df)))
-
-                    # Display the force plot for the selected index
-                    force_plot = shap.force_plot(exp.expected_value, shap_values[index], features=X.iloc[index], feature_names=X.columns)
-                    st_shap(force_plot, height=200, width=800)
-                    st.markdown("By examining the force plot, we can see which features have the most significant impact on the model's decision for a specific company's financial statement. It helps us understand the specific factors that contribute to identifying anomalies or unusual patterns.")
-
-
-                    
-        with tab4:
             #st.write("## ")
             
             st.markdown("### Anomaly Probability Analyzer with PyNomaly")
-            st.markdown("Our Anomaly Probability Analyzer feature equips you with a powerful tool to assess the likelihood of abnormal data within your financial statements. By leveraging sophisticated algorithms and statistical analysis, this functionality calculates precise probabilities for identifying anomalous data points. Gain deeper insights into potentially fraudulent or suspicious activities, enabling you to prioritize investigations and allocate resources effectively. With a user-friendly interface and accurate probability calculations, our Anomaly Probability Analyzer empowers you to make data-driven decisions with confidence. Uncover hidden risks and protect your financial integrity by leveraging our robust and intuitive Anomaly Probability Analyzer.")
+            st.markdown("Our Anomaly Probability Analyzer feature equips you with a powerful tool to assess the likelihood of abnormal trajectory within your student data. By leveraging sophisticated algorithms and statistical analysis, this functionality calculates precise probabilities for identifying anomalous data points. Gain deeper insights into potentially dropouts, enabling you to prioritize investigations and allocate resources effectively. With a user-friendly interface and accurate probability calculations, our Anomaly Probability Analyzer empowers you to make data-driven decisions with confidence. Uncover hidden patterns and protect your institutions integrity by leveraging our robust and intuitive Anomaly Probability Analyzer.")
             
-            #df = df.drop(['ID', 'Default', 'Unnamed: 0', 'DimFacilityKey', 'FinancialsDate', 'Year', 'Month', 'Week', 'Day', 'Date', 'ReturnEquityRatio'], axis=1)
-            tab1, tab2 = st.tabs(["Fraud Probabilities", "Industry Fraud Probabilities"])
-            with tab1:
+            st.markdown("#### Student Probabilities")
+            m = loop.LocalOutlierProbability(df, extent=2, n_neighbors=45, use_numba=True).fit()
+            scores1 = m.local_outlier_probabilities
 
+            df['pynomaly_probabilities'] = scores1
 
-                # Encode categorical columns using one-hot encoding
-                encoder = OneHotEncoder()
-                encoded_cat_columns = encoder.fit_transform(df[['Financial_Type', 'Country', 'Industry']])
-                encoded_cat_columns_df = pd.DataFrame(encoded_cat_columns.toarray(), columns=encoder.get_feature_names_out(
-                    ['Financial_Type', 'Country', 'Industry']))
+            col1, col2 = st.tabs(["Probabilities", "Scores"])
 
-                # Combine encoded categorical columns with numerical columns
-                X = pd.concat([df.drop(['Financial_Type', 'Country', 'Industry'], axis=1), encoded_cat_columns_df], axis=1)
-                # Create an LOF instance
+            with col1:
+                st.subheader('Probability Range')
+                #st.write(df['pynomaly_probabilities'])
 
-                m = loop.LocalOutlierProbability(X, extent=2, n_neighbors=45, use_numba=True).fit()
-                scores1 = m.local_outlier_probabilities
+                prob_min = st.slider("Minimum Probability", float(df['pynomaly_probabilities'].min()), float(df['pynomaly_probabilities'].max()))
+                prob_max = st.slider("Maximum Probability", float(df['pynomaly_probabilities'].min()), float(df['pynomaly_probabilities'].max()), value=float(df['pynomaly_probabilities'].max()))
+                filtered_probs = df[(df['pynomaly_probabilities'] >= prob_min) & (df['pynomaly_probabilities'] <= prob_max)]
+                st.write(filtered_probs['pynomaly_probabilities'])
+                st.markdown("The analysis results provide valuable information about the students data within the dataset. These results consist of two key components: the index or position of each student data and the corresponding probability score associated with it.")
+                st.markdown("- The Index or Position signifies the specific location of a student data within the dataset. It serves as a unique identifier or reference point for each student, allowing for easy identification and tracking. The index can be used to retrieve and retrieve specific students for further examination or analysis.")
+                st.markdown("- The Probability Score is a numerical value that indicates the likelihood or probability of a student data being classified as anomalous or deviating from the expected patterns. This score serves as a measure of the student's abnormality within the dataset. Higher probability scores suggest a higher degree of deviation, while lower scores indicate a closer alignment with normal or expected behavior.")
 
-                df['pynomaly_probabilities'] = scores1
+            with col2:
+                st.subheader('Scores')
+                df['score'] = pd.cut(df['pynomaly_probabilities'], bins=[0, 0.2, 0.4, 0.6, 0.8, 1], labels=[1, 2, 3, 4, 5], right=False)
+                score_options = ['All', 1, 2, 3, 4, 5]
+                selected_score = st.selectbox('Select Score', score_options)
+                if selected_score != 'All':
+                    filtered_scores = df[df['score'] == selected_score]
+                    st.write(filtered_scores['score'])
+                else:
+                    st.write(df['score'])
 
-                col1, col2 = st.tabs(["Probabilities", "Scores"])
-
-                with col1:
-                    st.subheader('Probability Range')
-                    #st.write(df['pynomaly_probabilities'])
-
-                    prob_min = st.slider("Minimum Probability", float(df['pynomaly_probabilities'].min()), float(df['pynomaly_probabilities'].max()))
-                    prob_max = st.slider("Maximum Probability", float(df['pynomaly_probabilities'].min()), float(df['pynomaly_probabilities'].max()), value=float(df['pynomaly_probabilities'].max()))
-                    filtered_probs = df[(df['pynomaly_probabilities'] >= prob_min) & (df['pynomaly_probabilities'] <= prob_max)]
-                    st.write(filtered_probs['pynomaly_probabilities'])
-                    st.markdown("The analysis results provide valuable information about the financial statements within the dataset. These results consist of two key components: the index or position of each financial statement and the corresponding probability score associated with it.")
-                    st.markdown("- The Index or Position signifies the specific location of a financial statement within the dataset. It serves as a unique identifier or reference point for each statement, allowing for easy identification and tracking. The index can be used to retrieve and retrieve specific statements for further examination or analysis.")
-                    st.markdown("- The Probability Score is a numerical value that indicates the likelihood or probability of a financial statement being classified as anomalous or deviating from the expected patterns. This score serves as a measure of the statement's abnormality within the dataset. Higher probability scores suggest a higher degree of deviation, while lower scores indicate a closer alignment with normal or expected behavior.")
-
-                with col2:
-                    st.subheader('Scores')
-                    df['score'] = pd.cut(df['pynomaly_probabilities'], bins=[0, 0.2, 0.4, 0.6, 0.8, 1], labels=[1, 2, 3, 4, 5], right=False)
-                    score_options = ['All', 1, 2, 3, 4, 5]
-                    selected_score = st.selectbox('Select Score', score_options)
-                    if selected_score != 'All':
-                        filtered_scores = df[df['score'] == selected_score]
-                        st.write(filtered_scores['score'])
-                    else:
-                        st.write(df['score'])
-
-            with tab2:
-                st.markdown('''Selecting the industry is a crucial step in effectively detecting financial statement fraud. Different industries have unique characteristics, data patterns, and risk profiles. By choosing the relevant industry, you can apply specialized fraud detection models and analysis techniques tailored to that specific sector, increasing the accuracy and effectiveness of your fraud detection efforts.
-
-Each industry may have its own set of common fraudulent activities, transaction types, or financial indicators that require focused attention. By selecting the appropriate industry, you can leverage industry-specific expertise and knowledge to identify potential anomalies and uncover fraudulent behaviors more efficiently.
-
-Furthermore, industry-specific analysis allows you to benchmark against industry norms and identify outliers or irregularities that may indicate fraudulent activities specific to that sector. This targeted approach enhances the precision of your fraud detection efforts and enables you to take appropriate actions promptly.
-
-Selecting the industry ensures that your financial statement fraud detection app aligns with the unique requirements and risks associated with the specific industry, enabling you to proactively safeguard your organization's financial integrity.
-
-'''
-)
-                # Get unique industry values from the 'Industry' column
-                industries = df['Industry'].unique()
-
-                # Add a default option for the selectbox
-                industries = ['Select an industry to detect'] + list(industries)
-
-                # Display the selectbox
-                selected_industry = st.selectbox('Select an industry to detect', industries)
-
-                # Check if an industry is selected
-                if selected_industry != 'Select an industry to detect':
-                    # Filter the DataFrame based on the selected industry
-                    filtered_df = df[df['Industry'] == selected_industry]
-                    filtered_df = filtered_df.drop(['Financial_Type', 'Country', 'Industry'], axis=1)
-
-                    m = loop.LocalOutlierProbability(filtered_df, extent=2, n_neighbors=45, use_numba=True).fit()
-                    scores1 = m.local_outlier_probabilities
-
-                    filtered_df['pynomaly_probabilities'] = scores1
-
-                    # Display 'Probabilities' and 'Scoring' sections side by side
-                    col1, col2 = st.columns(2)
-
-                    with col1:
-                        st.subheader('Probabilities')
-                        st.write(filtered_df['pynomaly_probabilities'])
-
-                    with col2:
-                        st.subheader('Scoring')
-                        filtered_df['score'] = pd.cut(filtered_df['pynomaly_probabilities'], bins=[0, 0.2, 0.4, 0.6, 0.8, 1], labels=[1, 2, 3, 4, 5], right=False)
-                        st.write(filtered_df['score'])
-
-                            
-        with tab5:
-            st.markdown("### PyOD Suspicious Activity Detector")
-            st.markdown("Our Suspicious Activity Detector feature is designed to identify potentially fraudulent or suspicious behavior within your financial statements. This powerful tool utilizes advanced algorithms and data science techniques to flag transactions and activities that raise red flags. By analyzing patterns, anomalies, and risk indicators, our detector helps you uncover and investigate potential instances of financial misconduct or fraudulent behavior. With a user-friendly interface and accurate detection capabilities, our Suspicious Activity Detector empowers you to safeguard your organization's financial integrity and take prompt action against suspicious activities. Stay vigilant and protect your business from potential financial risks with our reliable Suspicious Activity Detector.")
-            
-            df = df.drop(['Unnamed: 0', 'Default'], axis=1)
-
-            df = df.drop(['Industry', 'Country', 'Financial_Type', 'ID', 'DimFacilityKey'], axis=1)
-            scaler = StandardScaler()
-            predictions = []
-            # Creating a dictionary to store the outlier detection models
-            models = {
-                #'AutoEncoder': AutoEncoder(contamination=0.03),
-                'PCA': ppca(contamination=0.03),
-                'IForest': IForest(contamination=0.03),
-                'MinimumCovarianceDeterminant': MCD(contamination=0.03),
-                'FeatureBagging': FeatureBagging(contamination=0.03),
-                }
-
-            # Training each model and storing their anomaly scores
-            with st.spinner("Detecting anomalies..."):
-                for name, model in models.items():
-                    X_scaled = scaler.fit_transform(df)
-                    model.fit(X_scaled)
-                    prediction = model.predict(X_scaled)
-                    predictions.append(prediction)
-
-                    # Hide epoch information
-                    #st.balloons()
-            #autoencoder_pred = list(predictions[0])
-            IForest_pred = list(predictions[1])
-
-            pca_pred = list(predictions[0])
-
-            mcd_pred = list(predictions[2])
-
-            fb_pred = list(predictions[3])
-
-
-            pyod_preds = pd.DataFrame()
-            #pyod_preds['autoencoder_pred'] = autoencoder_pred
-            pyod_preds['if_pred'] = IForest_pred
-            pyod_preds['pca_pred'] = pca_pred
-
-            pyod_preds['mcd_pred'] = mcd_pred
-
-            pyod_preds['fb_pred'] = fb_pred
-            # Calculate the mean prediction for each financial statement
-            pyod_preds['mean_prediction'] = pyod_preds.mean(axis=1)
-            # Filter statements classified as defaulters
-            predicts = df[pyod_preds['mean_prediction'] >= 0.5]
-
-            if not predicts.empty:
-                st.write("### Potential Anomalies:")
-                st.write(f"There are {len(predicts)} potential anomalies")
-                st.write(predicts)
-
-                    
     if page_selection == "Help":
-        tab1, tab2, tab3 = st.tabs(["Who We Are", "Resources", "Streamlit Help"])
+        tab1, tab3 = st.tabs(["Who We Are", "Streamlit Help"])
         with tab1:
-            ab1, ab2 = st.tabs(["ExploreAI", "Our Team"])
-            with ab1:
-                st.subheader("About ExploreAI")
-                st.write("ExploreAI builds AI-driven software and digital twins for global companies. We are proud of domain expertise in the utilities, insurance, banking, and telecommunications industries."
-                         "We are able to help you accelerate your digital teams: train your workforce, hire talent, or sponsor students through a data science programme. These offerings are powered by the ExploreAI Academy: a learning institution teaching data and AI skills for the next generation."
-                         "We have offices in London, Cape Town, Johannesburg, Durban, and Mauritius. We consult to clients in the UK, the US, the Nordics, and South Africa.")
-            with ab2:
-                #st.subheader("Financial Statement Fraud Detection Team 6")
-                
+                st.subheader("The Team")
+                #st.write("")
                 # Team description
-                team_description = "We are a team of data science interns at ExploreAI, working on financial statement fraud detection. Our team consists of talented individuals from South Africa and Nigeria, bringing a diverse range of skills and expertise to tackle complex challenges in the field."
+                team_description = "A Data Scientist from Nigeria, bringing a diverse range of skills and expertise to tackle complex challenges in the field."
 
                 # Team members
                 team_members = [
                     {
-                        "name": "Ngawethu Mtirara",
-                        "description": "Ngawethu  Mtirara is Junior data scientist, with a background in Electrical Engineering.  With a cup of coffee in hand, Ngawethu's energy knows no bounds, ready to conquer any data challenge that comes his way. Armed with a passion for discovering patterns and extracting insights, Ngawethu fearlessly dives into projects, fueled by the invigorating power of caffeine. Beyond the realm of data, Ngawethu's love for animals is boundless, finding inspiration in the wonders of the natural world.",
-                        "picture": "ngawethu.jpg"
-                    },
-                    {
-                        "name": "Idongesit Bokeime",
-                        "description": "Idongesit is a detail-oriented data scientist with a strong background in the banking industry with 8 years experience as head of operations. With her analytical mindset and deep understanding of the finance industry, she played a crucial role in uncovering patterns. Idongesit's commitment to accuracy and precision ensures the reliability of our fraud detection models.",
-                        "picture": "idongesit.jpg"
-                    },
-                    {
-                        "name": "Manoko Langa",
-                        "description": "Manoko Langa identifies as a highly motivated Junior data scientist with a strong background in the natural sciences field. During his studies in the natural sciences field, he recognized the incredible potential of data analysis and because of this strong interest that he's developed towards data analysis, he decided to pivot his career towards data science by enrolling with ExploreAI Academy where he learned advanced skills in programming languages such as Python, R, SQL, statistical analysis, machine learning, artificial intelligence and data visualization. With a blend of such technical skills and his outstanding communication and collaboration skills, it is clear that he could not have chosen any better career path.",
-                        "picture": "manoko.jpg"
-                    },
-                    {
                         "name": "Umar Kabir",
-                        "description": "Umar is a talented data scientist with expertise in anomaly detection and pattern recognition. His ability to identify hidden insights in complex financial data sets is instrumental in detecting fraudulent activities. Umar's strong analytical skills and passion for data science drive innovation within our team.",
+                        "description": "Umar is a talented data scientist with expertise in, supervised & unsupervised learning, anomaly detection and pattern recognition. His ability to identify hidden insights in complex financial data sets is instrumental in detecting dropoutsulent activities. Umar's strong analytical skills and passion for data science drive innovation within our team.",
                         "picture": "umar.jpg"
                     },
-                    {
-                        "name": "Kayode Gideon Oloyede",
-                        "description": "Kayode is a skilled data scientist with good analytical skills. Kayode has good attention to detail and critical thinking abilities.",
-                        "picture": "kayode.jpg"
-                    }
                 ]
-
                 # Display team information
-                st.subheader("Financial Statement Fraud Detection Team 6")
+                
                 st.write(team_description)
 
                 # Display individual team member information
                 for member in team_members:
                     st.subheader(member["name"])
                     st.write(member["description"])
-                    picture_path = f"resources/imgs/{member['picture']}"
+                    picture_path = f"src/resources/imgs/{member['picture']}"
                     st.image(picture_path, caption=member["name"], width=200)
             # Header contents
-        with tab2:
-            st.header("This page contains some useful resources")
-            col1, col2, col3 = st.columns(3)
-
-            with col1:
-                st.markdown(
-                    "[Financial Statemets](https://www.investopedia.com/terms/f/financial-statements.asp) [![Investopedia](https://icons.iconarchive.com/icons/papirus-team/papirus-apps/16/notion-icon.png)](https://www.investopedia.com/terms/f/financial-statements.asp)"
-                )
-
-            with col2:
-                st.markdown(
-                    "[Benford's Law](https://statisticsbyjim.com/probability/benfords-law/) [![External Link](https://icons.iconarchive.com/icons/iconsmind/outline/16/External-Link-icon.png)](https://statisticsbyjim.com/probability/benfords-law/)"
-                )
-
-            with col3:
-                st.markdown(
-                    "[White paper](https://drive.google.com/file/d/16sAqHxtkHZiP53LFs1rdrTV2qsFj0MFW/view?usp=sharing) [![PDF](https://icons.iconarchive.com/icons/paomedia/small-n-flat/16/file-pdf-icon.png)](https://drive.google.com/file/d/16sAqHxtkHZiP53LFs1rdrTV2qsFj0MFW/view?usp=sharing)"
-                )
-
-            with col1:
-                st.markdown(
-                    "[Benford-py GitHub](https://github.com/milcent/benford_py) [![GitHub](https://icons.iconarchive.com/icons/limav/flat-gradient-social/16/Github-icon.png)](https://github.com/milcent/benford_py)"
-                )
-
-            with col2:
-                st.markdown(
-                    "[PyOD GitHub](https://github.com/yzhao062/pyod) [![GitHub](https://icons.iconarchive.com/icons/limav/flat-gradient-social/16/Github-icon.png)](https://github.com/yzhao062/pyod)"
-                )
-
-            with col3:
-                st.markdown(
-                    "[PyNomaly GitHub](https://github.com/vc1492a/PyNomaly) [![GitHub](https://icons.iconarchive.com/icons/limav/flat-gradient-social/16/Github-icon.png)](https://github.com/vc1492a/PyNomaly)"
-                )
-
-            
-                
 
         with tab3:
             st.header("Welcome to the Streamlit Help Page")
