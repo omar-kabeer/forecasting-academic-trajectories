@@ -6,6 +6,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import matplotlib.ticker as ticker
 import itertools
+import pickle
 
 from pandas.plotting import scatter_matrix
 from sklearn.model_selection import train_test_split
