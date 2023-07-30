@@ -16,7 +16,7 @@ To get started with the project, follow these simple steps:
 
 1. Clone the repository from GitHub: `git clone https://github.com/omar-kabeer/forecasting-academic-trajectories.git`
 2. Install the necessary Python packages using the `requirements.txt` file: `pip install -r requirements.txt`
-3. Run the `app.py` file to launch the Streamlit app.
+3. Run the `app.py` file to launch the Streamlit app. `streamlit run app.py`
 
 ## Usage
 
