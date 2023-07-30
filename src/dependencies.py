@@ -26,6 +26,7 @@ from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
+from sklearn.preprocessing import  LabelEncoder
 
 # Libraries for classification
 from sklearn.svm import SVC, LinearSVC
