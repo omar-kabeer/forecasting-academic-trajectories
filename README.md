@@ -1,4 +1,4 @@
-# Welcome to Forecasting Academic Trajectories: Predicting Students' Success 📈
+# Forecasting Academic Trajectories: Predicting Students' Success 📈
 
 This project aims to develop a powerful predictive model that accurately classifies students into two categories: those at risk of dropping out and those likely to succeed academically. Leveraging advanced data science techniques, we will identify essential factors that influence these outcomes, providing actionable insights to educational institutions for enhancing student support and overall academic success.
 
