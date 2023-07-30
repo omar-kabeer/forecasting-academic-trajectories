@@ -24,6 +24,8 @@ from sklearn.feature_selection import SelectFromModel
 from sklearn.feature_selection import mutual_info_classif
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+from sklearn.manifold import TSNE
 
 # Libraries for classification
 from sklearn.svm import SVC, LinearSVC
