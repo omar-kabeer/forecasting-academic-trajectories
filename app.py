@@ -25,7 +25,6 @@ from pyod.models.knn import KNN
 from pyod.models.gmm import GMM
 # Streamlit dependencies
 import streamlit as st
-import benford as bf
 from sklearn.preprocessing import StandardScaler
 from sklearn.ensemble import IsolationForest
 from sklearn.neighbors import LocalOutlierFactor
